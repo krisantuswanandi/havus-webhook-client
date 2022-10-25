@@ -1,7 +1,7 @@
 <template>
-  <div id="dashboard" class="min-h-screen relative flex pt-16">
-    <div id="leftbar" class="w-80 bg-gray-blue-50">
-      <div id="header-request-list" class="px-6 py-2">
+  <div id="dashboard" class="min-h-screen relative flex pt-14">
+    <div id="leftbar" class="w-96 bg-gray-blue-50 border-2 border-r-slate-300">
+      <div id="header-request-list" class="px-6 py-3">
         <p class="text-xl font-semibold text-gray-blue-900">REQUEST ({{requests.length}})</p>
       </div>
 
@@ -27,19 +27,47 @@
       </div>
     </div>
 
-    <div id="request-detail">
-      <h1>{{ selectedData.id }}</h1>
+    <div id="content" class="p-5 w-full">
+      <div class="grid grid-cols-2 gap-3">
+        <CardTable
+          title="Request Details"
+          :item="requestDetailTranslator(selectedData)"
+        />
+        <CardTable
+          title="Headers"
+          :item="parseJson(selectedData.raw_headers)"
+          :value-as-code="true"
+        />
+        <CardTable
+          title="Query strings"
+          :item="parseJson(selectedData.raw_query_strings)"
+          :value-as-code="true"
+        />
+        <CardTable
+          title="Form Values"
+          :item="{}"
+          :value-as-code="true"
+        />
+        <CardTable
+          title="Raw Body"
+          class="col-span-2"
+          :item="parseJson(selectedData.raw_body)"
+          :value-as-raw="true"
+        />
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import Badge from '../components/Badge.vue';
+import CardTable from '../components/CardTable.vue';
 
 export default {
   name: 'RequestsView',
   components: {
     Badge,
+    CardTable,
   },
   data() {
     return {
@@ -51,7 +79,7 @@ export default {
           account_id: 'billing-123',
           raw_headers: '{"Accept":["*/*"],"Accept-Encoding":["gzip, deflate, br"],"Cache-Control":["no-cache"],"Connection":["keep-alive"],"Content-Length":["746"],"Content-Type":["application/json"],"Cookie":["ahoy_visitor=49c32009-5909-4932-b28a-9e8b6392da04"],"Postman-Token":["b6430a58-86c5-4cf6-ae5b-051dbaa49859"],"User-Agent":["PostmanRuntime/7.29.2"]}',
           raw_query_strings: '{"name":["dragon"],"suffix":["flux"]}',
-          raw_body: '"{\n    "sales_order": {\n        "memo": "",\n        "tags": [\n            "new_subscription",\n            "new"\n        ],\n        "person_name": "Budi 123zxxx",\n        "email": "buset@mail.co",\n        "address": "jaln 123",\n        "transaction_date": "08/09/2020",\n        "due_date": "11/09/2020",\n        "discount_type_name": "Percent",\n        "reference_no": "ref-no",\n        "transaction_no": "BS/asoaiiq/1231/co1",\n        "transaction_lines_attributes": [\n            {\n                "rate": "750000",\n                "discount": "0",\n                "quantity": 12,\n                "line_tax_id": null,\n                "product_name": "Talenta Standard Flat",\n                "line_tax_name": "PPN-"\n            }\n        ]\n    }\n}',
+          raw_body: '"{\n    sales_order": {\n        "memo": "",\n        "tags": [\n            "new_subscription",\n            "new"\n        ],\n        "person_name": "Budi 123zxxx",\n        "email": "buset@mail.co",\n        "address": "jaln 123",\n        "transaction_date": "08/09/2020",\n        "due_date": "11/09/2020",\n        "discount_type_name": "Percent",\n        "reference_no": "ref-no",\n        "transaction_no": "BS/asoaiiq/1231/co1",\n        "transaction_lines_attributes": [\n            {\n                "rate": "750000",\n                "discount": "0",\n                "quantity": 12,\n                "line_tax_id": null,\n                "product_name": "Talenta Standard Flat",\n                "line_tax_name": "PPN-"\n            }\n        ]\n    }\n}',
           method: 'POST',
           ip_address: '12.34.5.678',
           hostname: 'localhost:3000',
@@ -64,7 +92,7 @@ export default {
           account_id: 'billing-123',
           raw_headers: '{"Accept":["*/*"],"Accept-Encoding":["gzip, deflate, br"],"Cache-Control":["no-cache"],"Connection":["keep-alive"],"Content-Length":["746"],"Content-Type":["application/json"],"Cookie":["ahoy_visitor=49c32009-5909-4932-b28a-9e8b6392da04"],"Postman-Token":["b6430a58-86c5-4cf6-ae5b-051dbaa49859"],"User-Agent":["PostmanRuntime/7.29.2"]}',
           raw_query_strings: '{"name":["dragon"],"suffix":["flux"]}',
-          raw_body: '"{\n    "sales_order": {\n        "memo": "",\n        "tags": [\n            "new_subscription",\n            "new"\n        ],\n        "person_name": "Budi 123zxxx",\n        "email": "buset@mail.co",\n        "address": "jaln 123",\n        "transaction_date": "08/09/2020",\n        "due_date": "11/09/2020",\n        "discount_type_name": "Percent",\n        "reference_no": "ref-no",\n        "transaction_no": "BS/asoaiiq/1231/co1",\n        "transaction_lines_attributes": [\n            {\n                "rate": "750000",\n                "discount": "0",\n                "quantity": 12,\n                "line_tax_id": null,\n                "product_name": "Talenta Standard Flat",\n                "line_tax_name": "PPN-"\n            }\n        ]\n    }\n}',
+          raw_body: '{\n    "sales_order": {\n        "memo": "",\n        "tags": [\n            "new_subscription",\n            "new"\n        ],\n        "person_name": "Budi 123zxxx",\n        "email": "buset@mail.co",\n        "address": "jaln 123",\n        "transaction_date": "08/09/2020",\n        "due_date": "11/09/2020",\n        "discount_type_name": "Percent",\n        "reference_no": "ref-no",\n        "transaction_no": "BS/asoaiiq/1231/co1",\n        "transaction_lines_attributes": [\n            {\n                "rate": "750000",\n                "discount": "0",\n                "quantity": 12,\n                "line_tax_id": null,\n                "product_name": "Talenta Standard Flat",\n                "line_tax_name": "PPN-"\n            }\n        ]\n    }\n}',
           method: 'POST',
           ip_address: '::1',
           hostname: 'localhost:3000',
@@ -77,7 +105,7 @@ export default {
           account_id: 'billing-123',
           raw_headers: '{"Accept":["*/*"],"Accept-Encoding":["gzip, deflate, br"],"Cache-Control":["no-cache"],"Connection":["keep-alive"],"Content-Length":["746"],"Content-Type":["application/json"],"Cookie":["ahoy_visitor=49c32009-5909-4932-b28a-9e8b6392da04"],"Postman-Token":["b6430a58-86c5-4cf6-ae5b-051dbaa49859"],"User-Agent":["PostmanRuntime/7.29.2"]}',
           raw_query_strings: '{"name":["dragon"],"suffix":["flux"]}',
-          raw_body: '"{\n    "sales_order": {\n        "memo": "",\n        "tags": [\n            "new_subscription",\n            "new"\n        ],\n        "person_name": "Budi 123zxxx",\n        "email": "buset@mail.co",\n        "address": "jaln 123",\n        "transaction_date": "08/09/2020",\n        "due_date": "11/09/2020",\n        "discount_type_name": "Percent",\n        "reference_no": "ref-no",\n        "transaction_no": "BS/asoaiiq/1231/co1",\n        "transaction_lines_attributes": [\n            {\n                "rate": "750000",\n                "discount": "0",\n                "quantity": 12,\n                "line_tax_id": null,\n                "product_name": "Talenta Standard Flat",\n                "line_tax_name": "PPN-"\n            }\n        ]\n    }\n}',
+          raw_body: '{\n    "sales_order": {\n        "memo": "",\n        "tags": [\n            "new_subscription",\n            "new"\n        ],\n        "person_name": "Budi 123zxxx",\n        "email": "buset@mail.co",\n        "address": "jaln 123",\n        "transaction_date": "08/09/2020",\n        "due_date": "11/09/2020",\n        "discount_type_name": "Percent",\n        "reference_no": "ref-no",\n        "transaction_no": "BS/asoaiiq/1231/co1",\n        "transaction_lines_attributes": [\n            {\n                "rate": "750000",\n                "discount": "0",\n                "quantity": 12,\n                "line_tax_id": null,\n                "product_name": "Talenta Standard Flat",\n                "line_tax_name": "PPN-"\n            }\n        ]\n    }\n}',
           method: 'POST',
           ip_address: '::1',
           hostname: 'localhost:3000',
@@ -90,6 +118,24 @@ export default {
   methods: {
     selectData(newVal) {
       this.selectedData = newVal;
+    },
+    requestDetailTranslator(data) {
+      return {
+        [data.method]: data.hostname,
+        Host: data.ip_address,
+        Date: data.created_at,
+        // TODO: Size: data.size,
+        ID: data.id,
+      };
+    },
+    parseJson(data) {
+      if (!data) return '';
+
+      try {
+        return JSON.parse(data);
+      } catch (e) {
+        return data;
+      }
     },
   },
 };

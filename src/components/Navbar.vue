@@ -1,7 +1,7 @@
 <!-- Please remove this file from your project -->
 <template>
   <header class="bg-gray-blue-900 py-3 fixed z-50 w-full text-white">
-    <div class="container mx-auto flex items-center justify-between flex-wrap">
+    <div class="mx-7 flex items-center justify-between flex-wrap">
       <router-link class="mr-5" to="/">
         <span class="text-3xl font-semibold">Webhook</span>
         <span class="ml-2 font-extralight text-sm">by Wadaw</span>

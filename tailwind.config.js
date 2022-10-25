@@ -1,15 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ["./public/index.html", "./src/**/*.{vue,js,jsx,ts,tsx}"],
-  container: {
-    padding: {
-      DEFAULT:  '2.5rem',
-      sm:       '2.5rem',
-      lg:       '4rem',
-      xl:       '5rem',
-      '2xl':    '6rem',
-    },
-  },
   theme: {
     extend: {
       colors: {
@@ -27,6 +18,7 @@ module.exports = {
       },
       fontFamily: {
         archivo: ["Archivo, sans-serif"],
+        'fira-code': ["Fira Code"],
       },
     },
   },
