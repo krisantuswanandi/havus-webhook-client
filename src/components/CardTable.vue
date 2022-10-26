@@ -1,8 +1,8 @@
 <template>
   <div>
     <div class="bg-gray-blue-50 rounded-md border border-slate-300 text-gray-blue-900">
-      <div class="px-7 py-3 flex justify-between items-center">
-        <h1 class="text-xl font-semibold">{{ title }}</h1>
+      <div class="px-4 py-2 flex justify-between items-center">
+        <h1 class="text-lg font-semibold">{{ title }}</h1>
 
         <label v-if="valueAsRaw" for="json-format" class="flex items-center">
           <input
@@ -17,7 +17,7 @@
       </div>
 
       <div v-if="valueAsRaw">
-        <div class="px-7 py-1 bg-white font-fira-code">
+        <div class="px-4 py-1 bg-white font-fira-code">
           <pre v-if="jsonFormat">{{ item }}</pre>
           <span v-else>{{ item }}</span>
         </div>
@@ -27,19 +27,24 @@
         <div
           v-for="(keyItem, i) in Object.keys(item)"
           :key="i"
-          :class="`px-7 py-1 bg-white ${i % 2 != 0 ? 'bg-gray-blue-50' : ''}`"
+          :class="`px-4 py-1 bg-white ${i % 2 != 0 ? 'bg-gray-blue-50' : ''}`"
         >
-          <div class="flex">
-            <div class="basis-1/4 flex items-center">
+          <div class="grid grid-cols-4">
+            <div class="flex items-center">
               <Badge v-if="kindOfRequestMethod(keyItem)" variant="yellow">{{ keyItem }}</Badge>
               <span v-else>{{ keyItem }}</span>
             </div>
 
-            <div class="basis-3/4">
-              <span v-if="valueAsCode" class="font-fira-code bg-slate-200 px-2 py-0.5 rounded-md">
-                {{ displayAsCode(item[keyItem]) }}
-              </span>
-              <span v-else>{{ item[keyItem] }}</span>
+            <div class="col-span-3">
+              <div>
+                <p
+                  v-if="valueAsCode"
+                  class="font-fira-code bg-slate-200 px-2 py-0.5 rounded-md inline break-words"
+                >
+                  {{ displayAsCode(item[keyItem]) }}
+                </p>
+                <p v-else>{{ item[keyItem] }}</p>
+              </div>
             </div>
           </div>
         </div>
@@ -95,8 +100,6 @@ export default {
     },
     displayAsJson(data) {
       try {
-        console.log(JSON.stringify(data).length);
-        console.log(JSON.stringify(data, null, 4).length);
         return JSON.stringify(data, null, 4);
       } catch {
         return data;

@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["./public/index.html", "./src/**/*.{vue,js,jsx,ts,tsx}"],
+  content: ['./public/index.html', './src/**/*.{vue,js,jsx,ts,tsx}'],
   theme: {
     extend: {
       colors: {
@@ -11,14 +11,14 @@ module.exports = {
           800: '#6D718A',
           900: '#374151',
         },
-        'orange': {
+        orange: {
           100: '#FFE4DB',
           300: '#F86D3F',
         },
       },
       fontFamily: {
-        archivo: ["Archivo, sans-serif"],
-        'fira-code': ["Fira Code"],
+        archivo: ['Archivo, sans-serif'],
+        'fira-code': ['Fira Code'],
       },
     },
   },

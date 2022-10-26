@@ -3,8 +3,8 @@
   <header class="bg-gray-blue-900 py-3 fixed z-50 w-full text-white">
     <div class="mx-7 flex items-center justify-between flex-wrap">
       <router-link class="mr-5" to="/">
-        <span class="text-3xl font-semibold">Webhook</span>
-        <span class="ml-2 font-extralight text-sm">by Wadaw</span>
+        <span class="text-xl font-semibold">Webhook</span>
+        <span class="ml-1 font-extralight text-xs">by Wadaw</span>
       </router-link>
 
       <!-- TODO: -->

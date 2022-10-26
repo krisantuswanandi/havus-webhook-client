@@ -1,6 +1,6 @@
 <template>
   <div
-    :class="`py-1 px-4 inline-flex items-center rounded text-xs font-bold uppercase
+    :class="`py-0.5 px-2 inline-flex items-center rounded text-xs font-bold uppercase
     ${currentVariant}`"
   >
     <slot />
