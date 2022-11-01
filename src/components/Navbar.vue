@@ -1,11 +1,15 @@
 <!-- Please remove this file from your project -->
 <template>
-  <header class="bg-gray-blue-900 py-3 fixed z-50 w-full text-white">
-    <div class="mx-7 flex items-center justify-between flex-wrap">
-      <router-link class="mr-5" to="/">
-        <span class="text-xl font-semibold">Webhook</span>
-        <span class="ml-1 font-extralight text-xs">by Wadaw</span>
-      </router-link>
+  <header class="bg-gray-blue-900 py-2 fixed z-50 w-full text-white">
+    <div class="mx-5 flex items-center justify-between flex-wrap">
+      <div class="flex items-center justify-between">
+        <img src="@/assets/logo.png" class="h-9" alt="logo"/>
+
+        <router-link class="ml-3" to="/">
+          <span class="text-xl font-semibold">Webhook</span>
+          <span class="ml-1 font-extralight text-xs">by Wadaw</span>
+        </router-link>
+      </div>
 
       <!-- TODO: -->
       <!-- <div class="block md:hidden">
