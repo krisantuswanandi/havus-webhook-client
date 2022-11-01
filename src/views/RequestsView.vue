@@ -12,7 +12,7 @@
           <FontAwesomeIcon
             size="xs"
             icon="rotate"
-            class="ml-1 animate-spin h-3 w-3"
+            class="ml-1 animate-spin h-3 w-3 text-gray-blue-900"
           />
         </div>
 
