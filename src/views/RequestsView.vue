@@ -1,26 +1,35 @@
 <template>
   <div id="dashboard" class="h-screen relative flex pt-11 text-sm">
+    <!-- --------------------- LEFTBAR - START --------------------- -->
     <div
       id="leftbar"
-      class="w-72 bg-gray-blue-50 border-2 border-r-slate-300 py-4 overflow-y-scroll
+      class="w-72 bg-gray-blue-50 border-r-2 border-r-slate-300 py-4 overflow-y-scroll
         flex flex-col"
     >
-      <div id="header-request-list" class="px-6 mb-3 flex justify-between items-center">
-        <p class="font-semibold text-gray-blue-900">REQUEST ({{requests.length}})</p>
+      <div id="header-request-list" class="px-5 mb-3 flex justify-between items-center">
+        <div class="flex items-center">
+          <p class="font-semibold text-gray-blue-900">REQUEST ({{requests.length}})</p>
+          <FontAwesomeIcon
+            size="xs"
+            icon="rotate"
+            class="ml-1 animate-spin h-3 w-3"
+          />
+        </div>
+
         <Button
           size="sm"
           :disabled="loading"
           @click="getNewerRequests"
-          icon="rotate"
-        >Load..</Button>
+        >
+          Load
+        </Button>
       </div>
 
       <div
         v-for="(request, i) in requests"
         :key="i"
-        :class="`px-6 py-2 hover:cursor-pointer
-        ${
-          selectedData.id == request.id ?
+        :class="`px-5 py-2 hover:cursor-pointer text-s
+        ${selectedData.id == request.id ?
             ' bg-gray-blue-900 text-white' :
             'text-gray-blue-900 hover:bg-slate-200'
         }`"
@@ -44,7 +53,9 @@
         Load Older
       </Button>
     </div>
+    <!-- --------------------- LEFTBAR - END --------------------- -->
 
+    <!-- --------------------- CONTENT - START --------------------- -->
     <div id="content" class="p-5 w-full overflow-y-scroll">
       <div class="grid grid-cols-2 gap-3">
         <CardTable
@@ -74,6 +85,7 @@
         />
       </div>
     </div>
+    <!-- --------------------- CONTENT - END --------------------- -->
   </div>
 </template>
 
