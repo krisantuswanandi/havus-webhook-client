@@ -12,7 +12,7 @@ yarn serve
 
 ### Compiles and minifies for production
 ```
-yarn build
+yarn build && cp redirects.txt dist/_redirects
 ```
 
 ### Lints and fixes files
