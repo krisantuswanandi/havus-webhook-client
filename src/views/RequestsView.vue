@@ -3,7 +3,7 @@
     <!-- --------------------- LEFTBAR - START --------------------- -->
     <div
       id="leftbar"
-      class="w-72 bg-gray-50 border-r border-r-slate-300 overflow-y-scroll
+      class="w-72 bg-slate-100 border-r border-r-slate-300 overflow-y-scroll
         flex flex-col"
     >
       <div id="header-logo" class="px-5 py-3 flex items-center">
