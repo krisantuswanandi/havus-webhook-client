@@ -9,7 +9,7 @@
       v-if="icon"
       size="xs"
       :icon="icon"
-      :class="`mr-1 ${classSizeForIcon}`"
+      :class="`mr-1 ${classSizeForIcon} ${iconSpin ? 'animate-spin' : ''}`"
     />
     <span><slot /></span>
   </button>
@@ -45,6 +45,11 @@ export default {
       default: 'md',
     },
     rounded: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+    iconSpin: {
       type: Boolean,
       required: false,
       default: false,

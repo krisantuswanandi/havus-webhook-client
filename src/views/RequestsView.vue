@@ -3,44 +3,51 @@
     <!-- --------------------- LEFTBAR - START --------------------- -->
     <div
       id="leftbar"
-      class="w-72 bg-slate-100 border-r border-r-slate-300 overflow-y-scroll
-        flex flex-col"
+      class="w-72 bg-slate-100 border-r border-r-slate-300 overflow-y-scroll flex flex-col"
     >
-      <div id="header-logo" class="px-5 py-3 flex items-center">
-        <router-link to="/" class="flex items-center justify-between">
-          <img src="@/assets/logo.png" class="h-9 mr-2" alt="logo"/>
+      <div class="sticky top-0 bg-slate-100">
+        <div id="header-logo" class="top-0 px-5 py-3 flex items-center">
+          <router-link to="/" class="flex items-center justify-between">
+            <img src="@/assets/logo.png" class="h-9 mr-2" alt="logo"/>
 
-          <div>
-            <span class="text-xl font-semibold">Webhook</span>
-            <span class="ml-1 font-extralight text-xs">by Wadaw</span>
-          </div>
-        </router-link>
-      </div>
-
-      <div id="header-request-list" class="px-5 my-2 flex justify-between items-center">
-        <div class="flex items-center">
-          <p class="font-semibold">REQUEST ({{ requests.length }})</p>
-          <FontAwesomeIcon
-            size="xs"
-            icon="rotate"
-            class="ml-1 animate-spin h-3 w-3"
-          />
+            <div>
+              <span class="text-xl font-semibold">Webhook</span>
+              <span class="ml-1 font-extralight text-xs">by Wadaw</span>
+            </div>
+          </router-link>
         </div>
 
-        <Button
-          size="sm"
-          variant="gray"
-          :disabled="loading"
-          @click="getNewerRequests"
+        <div
+          id="header-request-list"
+          class="px-5 py-1 flex justify-between items-center border-y border-y-slate-300
+            bg-slate-200"
         >
-          Load
-        </Button>
+          <div class="flex items-center">
+            <p class="font-semibold">REQUEST ({{ requests.length }})</p>
+            <FontAwesomeIcon
+              size="xs"
+              icon="rotate"
+              class="ml-1 animate-spin h-3 w-3"
+            />
+          </div>
+
+          <Button
+            size="sm"
+            variant="gray"
+            :disabled="loading"
+            :icon="loading ? 'spinner' : null"
+            :iconSpin="true"
+            @click="getNewerRequests"
+          >
+            Load
+          </Button>
+        </div>
       </div>
 
       <div
         v-for="(request, i) in requests"
         :key="i"
-        :class="`px-5 py-2 hover:cursor-pointer text-s
+        :class="`first:mt-24 px-5 py-2 hover:cursor-pointer text-s
         ${selectedData.id == request.id ?
             ' bg-gray-700 text-white' :
             'text-gray-700 hover:bg-slate-200'
@@ -62,6 +69,7 @@
         variant="gray"
         @click="getOlderRequests"
         :icon="loading ? 'spinner' : null"
+        :iconSpin="true"
       >
         Load Older
       </Button>
@@ -130,10 +138,18 @@
       <div
         v-if="Object.keys(selectedData).length > 0"
         id="content-body"
-        class="grid grid-cols-2 divide-x"
+        class="grid grid-cols-2"
       >
-        <CardTableCollapse title="Headers" :data="parseJson(selectedData.raw_headers)"/>
-        <CardTableCollapse title="Query Strings" :data="parseJson(selectedData.raw_query_strings)"/>
+        <CardTableCollapse
+          title="Headers"
+          :data="parseJson(selectedData.raw_headers)"
+          class="border-y border-y-slate-300"
+        />
+        <CardTableCollapse
+          title="Query Strings"
+          :data="parseJson(selectedData.raw_query_strings)"
+          class="border-y border-y-slate-300 border-l border-l-slate-300"
+        />
         <CardCollapse
           title="Raw Body"
           class="col-span-2"

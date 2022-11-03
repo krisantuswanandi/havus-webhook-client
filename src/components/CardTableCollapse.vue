@@ -1,5 +1,5 @@
 <template>
-  <div class="border-y border-y-slate-300 border-l-slate-300 bg-gray-400">
+  <div class="bg-gray-400">
     <div
       id="card-table-collapse-header"
       class="px-5 py-1 bg-gray-700 hover:bg-gray-800 text-gray-50 hover:cursor-pointer
