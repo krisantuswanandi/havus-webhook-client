@@ -77,7 +77,7 @@
     <!-- --------------------- LEFTBAR - END --------------------- -->
 
     <!-- --------------------- CONTENT - START --------------------- -->
-    <div id="content" class="w-full overflow-y-scroll">
+    <div id="content" class="w-full overflow-y-scroll flex flex-col">
       <div id="content-header" class="px-5 py-3 flex items-center border-b border-b-slate-300">
         <div
           id="title-content"
@@ -152,12 +152,12 @@
         />
         <CardCollapse
           title="Raw Body"
-          class="col-span-2"
+          class="col-span-2 border-b border-b-slate-300"
           :data="parseJson(selectedData.raw_body)"
         />
       </div>
 
-      <div id="advertisment" class="p-4 flex items-center justify-center">
+      <div id="advertisment" class="p-4 flex items-center justify-center mt-auto">
         <div id="ads-box" class="bg-slate-300 rounded h-20 w-3/5 flex items-center justify-center">
           <p class="animate-bounce text-lg font-semibold">ADVERTISEMENT</p>
         </div>
