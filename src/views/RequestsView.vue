@@ -19,7 +19,7 @@
 
       <div id="header-request-list" class="px-5 my-2 flex justify-between items-center">
         <div class="flex items-center">
-          <p class="font-semibold">REQUEST ({{requests.length}})</p>
+          <p class="font-semibold">REQUEST ({{ requests.length }})</p>
           <FontAwesomeIcon
             size="xs"
             icon="rotate"
@@ -58,7 +58,8 @@
       </div>
 
       <Button
-        class="mx-auto mt-2" size="sm" :disabled="loading"
+        class="mx-auto my-2" size="sm" :disabled="loading"
+        variant="gray"
         @click="getOlderRequests"
         :icon="loading ? 'spinner' : null"
       >
@@ -114,7 +115,7 @@
       >
         <div class="grow grid grid-cols-8">
           <div class="mb-3"><Badge variant="yellow">{{ selectedData.method }}</Badge></div>
-          <span class="col-span-7">{{ selectedData.hostname }}</span>
+          <span class="col-span-7">{{ selectedData.url }}</span>
 
           <span class="text-slate-400">Host</span>
           <span class="col-span-7">{{ selectedData.ip_address }}</span>
@@ -169,6 +170,9 @@ export default {
     return {
       selectedData: {},
     };
+  },
+  beforeCreate() {
+    this.$store.dispatch('setAccountId', this.$route.params.accountId);
   },
   mounted() {
     if (this.requests.length === 0) {

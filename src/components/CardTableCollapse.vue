@@ -1,5 +1,5 @@
 <template>
-  <div class="border-y border-y-slate-300 border-l-slate-300">
+  <div class="border-y border-y-slate-300 border-l-slate-300 bg-gray-400">
     <div
       id="card-table-collapse-header"
       class="px-5 py-1 bg-gray-700 hover:bg-gray-800 text-gray-50 hover:cursor-pointer
@@ -20,14 +20,12 @@
           :key="i"
           class="group grid grid-cols-4 px-5 py-1 bg-white hover:bg-slate-200 hover:cursor-pointer"
         >
-          <div class="flex items-center">
+          <div class="flex">
             <span class="text-slate-400 group-hover:text-slate-600">{{ key }}</span>
           </div>
 
           <div class="col-span-3">
-            <div>
-              <p class="text-slate-600">{{ joinValue(data[key]) }}</p>
-            </div>
+            <p class="break-words text-slate-600">{{ joinValue(data[key]) }}</p>
           </div>
         </div>
       </div>

@@ -6,12 +6,13 @@ import {
   APPEND_REQUESTS,
   PREPEND_REQUESTS,
   LOADING,
+  SET_ACCOUNT_ID,
 } from './mutation-types';
 
 export default createStore({
   state: {
     loading: false,
-    accountId: 'billing-123',
+    accountId: null,
     serverUrl: process.env.VUE_APP_SERVER_URL,
     requests: [],
   },
@@ -30,6 +31,9 @@ export default createStore({
     },
   },
   mutations: {
+    SET_ACCOUNT_ID(state, payload) {
+      state.accountId = payload;
+    },
     LOADING(state, payload) {
       state.loading = payload;
     },
@@ -46,7 +50,13 @@ export default createStore({
     },
   },
   actions: {
+    setAccountId(context, accountId) {
+      context.commit(SET_ACCOUNT_ID, accountId);
+    },
     getAllRequests(context) {
+      const { accountId } = context.state;
+      if (!accountId) return;
+
       context.commit(LOADING, true);
 
       axios({
@@ -64,12 +74,15 @@ export default createStore({
         });
     },
     getOlderRequests(context) {
+      const { accountId } = context.state;
+      if (!accountId) return;
+
       context.commit(LOADING, true);
 
       const queryParams = `max_id=${context.getters.oldestId}`;
 
       let url = `${context.state.serverUrl}api/v1/admin`;
-      url    += `/${context.state.accountId}/requests?${queryParams}`;
+      url    += `/${accountId}/requests?${queryParams}`;
 
       axios({
         method: 'GET',
@@ -86,12 +99,15 @@ export default createStore({
         });
     },
     getNewerRequests(context) {
+      const { accountId } = context.state;
+      if (!accountId) return;
+
       context.commit(LOADING, true);
 
       const queryParams = `min_id=${context.getters.newestId}`;
 
       let url = `${context.state.serverUrl}api/v1/admin`;
-      url    += `/${context.state.accountId}/requests?${queryParams}`;
+      url    += `/${accountId}/requests?${queryParams}`;
 
       axios({
         method: 'GET',

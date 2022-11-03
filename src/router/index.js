@@ -9,7 +9,7 @@ const routes = [
     component: HomeView,
   },
   {
-    path: '/requests/:id',
+    path: '/requests/:accountId',
     name: 'requests',
     component: RequestsView,
   },
