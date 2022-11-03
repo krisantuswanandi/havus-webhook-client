@@ -2,16 +2,16 @@
   <button
     :to="to"
     :disabled="disabled"
-    :class="`inline-flex items-center ${classSizeForButton} focus:outline-none
+    :class="`flex items-center ${classSizeForButton} focus:outline-none
       focus:ring ${classColorForButton} rounded ${rounded && 'rounded-full'}`"
   >
     <FontAwesomeIcon
       v-if="icon"
       size="xs"
       :icon="icon"
-      :class="`mr-1 animate-spin ${classSizeForIcon}`"
+      :class="`mr-1 ${classSizeForIcon}`"
     />
-    <slot />
+    <span><slot /></span>
   </button>
 </template>
 
@@ -61,10 +61,14 @@ export default {
           enabled: 'text-white bg-gray-700 hover:bg-gray-800 focus:ring-gray-200',
           disabled: 'text-white bg-gray-700 hover:bg-gray-800 focus:ring-gray-200',
         },
+        red: {
+          enabled: 'text-white bg-red-500 hover:bg-red-600 focus:ring-red-200',
+          disabled: 'text-white bg-red-700 hover:bg-red-800 focus:ring-red-200',
+        },
       },
       buttonSizeList: {
         sm: 'py-1 px-3 text-xs',
-        md: 'py-2 px-5 text-sm',
+        md: 'py-2 px-4 text-sm',
       },
       iconSizeList: {
         sm: 'h-3 w-3',

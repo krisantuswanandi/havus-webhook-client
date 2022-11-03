@@ -15,5 +15,6 @@ module.exports = {
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'vuejs-accessibility/click-events-have-key-events': 'off',
     'no-multi-spaces': 'off',
+    'no-param-reassign': 'off',
   },
 };

@@ -1,6 +1,6 @@
 <!-- Please remove this file from your project -->
 <template>
-  <header class="bg-gray-blue-900 py-2 fixed z-50 w-full text-white">
+  <header class="bg-gray-900 py-2 fixed z-50 w-full text-white">
     <div class="mx-5 flex items-center justify-between flex-wrap">
       <div class="flex items-center justify-between">
         <img src="@/assets/logo.png" class="h-9" alt="logo"/>

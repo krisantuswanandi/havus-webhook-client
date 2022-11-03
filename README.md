@@ -22,3 +22,6 @@ yarn lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+### References
+- https://markus.oberlehner.net/blog/transition-to-height-auto-with-vue/
