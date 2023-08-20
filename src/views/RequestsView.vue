@@ -47,21 +47,22 @@
       <div
         v-for="(request, i) in requests"
         :key="i"
-        :class="`first:mt-24 px-5 py-2 hover:cursor-pointer text-s
+        :class="`first:mt-24 px-5 py-3 hover:cursor-pointer
         ${selectedData.id == request.id ?
             ' bg-gray-700 text-white' :
             'text-gray-700 hover:bg-slate-200'
         }`"
         @click="selectData(request)"
       >
-        <div>
-          <Badge variant="yellow">{{ request.method }}</Badge>
-          <span class="ml-1">
-            #{{ request.id.slice(0,6) }} {{ request.ip_address }}
+        <div class="flex flex-nowrap items-center">
+          <Badge variant="yellow" class="font-bold">{{ request.method }}</Badge>
+          <span class="text-sm ml-1 leading-3">#{{ request.id.slice(0,6) }}</span>
+          <span class="text-sm ml-1 leading-3 text-ellipsis overflow-hidden">
+            {{ request.ip_address }}
           </span>
         </div>
 
-        <div class="mt-2">10/23/2022 10:32:37 PM</div>
+        <div class="mt-2">{{ formatDate(request.created_at) }}</div>
       </div>
 
       <Button
@@ -195,13 +196,31 @@ export default {
       this.getAllRequests();
     }
   },
-  computed: mapState(['requests', 'loading']),
+  computed: {
+    ...mapState(['requests', 'loading']),
+  },
   methods: {
     ...mapActions({
       getAllRequests: 'getAllRequests', // map `this.getAllRequests()` to `this.$store.dispatch('getAllRequests')`
       getOlderRequests: 'getOlderRequests',
       getNewerRequests: 'getNewerRequests',
+      addNewRequest: 'addNewRequest',
     }),
+    formatDate(dateStr) {
+      const options = {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: true,
+      };
+
+      const formatted = new Intl.DateTimeFormat('en-US', options).format(new Date(dateStr));
+
+      return formatted.replace(',', '');
+    },
     selectData(newVal) {
       this.selectedData = newVal;
     },

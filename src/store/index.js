@@ -5,6 +5,7 @@ import {
   REPLACE_ALL_REQUESTS,
   APPEND_REQUESTS,
   PREPEND_REQUESTS,
+  PREPEND_REQUEST,
   LOADING,
   SET_ACCOUNT_ID,
 } from './mutation-types';
@@ -47,6 +48,10 @@ export default createStore({
     PREPEND_REQUESTS(state, payload) {
       if (!payload) return;
       state.requests = payload.concat(state.requests);
+    },
+    PREPEND_REQUEST(state, payload) {
+      if (!payload) return;
+      state.requests.unshift(payload);
     },
   },
   actions: {
@@ -91,12 +96,15 @@ export default createStore({
         .then(({ data: dataResponse }) => {
           context.commit(APPEND_REQUESTS, dataResponse.data);
         })
-        .catch(({ response }) => {
-          console.log(response, 'DO SOMETHING HERE LATER!');
+        .catch((err) => {
+          console.log(err, 'DO SOMETHING HERE LATER!');
         })
         .finally(() => {
           context.commit(LOADING, false);
         });
+    },
+    addNewRequest(context, newData) {
+      context.commit(PREPEND_REQUEST, newData);
     },
     getNewerRequests(context) {
       const { accountId } = context.state;
