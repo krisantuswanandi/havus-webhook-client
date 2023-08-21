@@ -23,7 +23,7 @@
             bg-slate-200"
         >
           <div class="flex items-center">
-            <p class="font-semibold">REQUEST ({{ requests.length }})</p>
+            <p class="font-semibold">REQUEST ({{ requests?.length || 0 }})</p>
             <FontAwesomeIcon
               size="xs"
               icon="rotate"
