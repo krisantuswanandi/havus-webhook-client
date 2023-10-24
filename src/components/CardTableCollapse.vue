@@ -12,7 +12,7 @@
       <span class="ml-2 font-semibold">{{ title }}</span>
     </div>
 
-    <Collapse :collapsed="collapsed">
+    <AppCollapse :collapsed="collapsed">
       <div id="card-table-collapse-body" :class="`overflow-hidden`">
         <div
           v-for="(key, i) in Object.keys(data)"
@@ -32,42 +32,34 @@
           </div>
         </div>
       </div>
-    </Collapse>
+    </AppCollapse>
   </div>
 </template>
 
-<script>
-import Collapse from "./Collapse.vue";
+<script setup>
+import { ref } from "vue";
+import AppCollapse from "./AppCollapse.vue";
 
-export default {
-  name: "CardTableCollapseComponent",
-  components: { Collapse },
-  props: {
-    title: {
-      type: String,
-      required: true,
-    },
-    data: {
-      type: Object,
-      required: true,
-    },
+defineProps({
+  title: {
+    type: String,
+    required: true,
   },
-  data() {
-    return {
-      jsonFormat: false,
-      collapsed: false,
-    };
+  data: {
+    type: Object,
+    required: true,
   },
-  computed: {},
-  methods: {
-    joinValue(arr) {
-      if (!arr) return false;
+});
 
-      return arr.join(", ");
-    },
-    toggleCollapse() {
-      this.collapsed = !this.collapsed;
-    },
-  },
-};
+const collapsed = ref(false);
+
+function joinValue(arr) {
+  if (!arr) return false;
+
+  return arr.join(", ");
+}
+
+function toggleCollapse() {
+  this.collapsed = !this.collapsed;
+}
 </script>

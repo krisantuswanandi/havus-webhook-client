@@ -26,7 +26,7 @@
             <div class="i-fa6-solid-rotate ml-1 h-3 w-3 animate-spin" />
           </div>
 
-          <Button
+          <AppButton
             size="sm"
             variant="gray"
             :disabled="loading"
@@ -35,7 +35,7 @@
             @click="getNewerRequests"
           >
             Load
-          </Button>
+          </AppButton>
         </div>
       </div>
 
@@ -51,9 +51,9 @@
         @click="selectData(request)"
       >
         <div class="flex flex-nowrap items-center">
-          <Badge variant="yellow" class="font-bold">
+          <AppBadge variant="yellow" class="font-bold">
             {{ request.method }}
-          </Badge>
+          </AppBadge>
           <span class="ml-1 text-sm leading-3">
             #{{ request.id.slice(0, 6) }}
           </span>
@@ -67,7 +67,7 @@
         </div>
       </div>
 
-      <Button
+      <AppButton
         class="mx-auto my-2"
         size="sm"
         :disabled="loading"
@@ -77,7 +77,7 @@
         @click="getOlderRequests"
       >
         Load Older
-      </Button>
+      </AppButton>
     </div>
     <!-- --------------------- LEFTBAR - END --------------------- -->
 
@@ -96,9 +96,9 @@
           <span class="ml-3 text-lg">{{ selectedData.id }}</span>
         </div>
 
-        <Button class="ml-auto" variant="gray" icon="i-fa6-solid-crown">
+        <AppButton class="ml-auto" variant="gray" icon="i-fa6-solid-crown">
           Upgrade
-        </Button>
+        </AppButton>
 
         <div
           id="profile"
@@ -122,9 +122,9 @@
       >
         <div class="grid grow grid-cols-8">
           <div class="mb-3">
-            <Badge variant="yellow">
+            <AppBadge variant="yellow">
               {{ selectedData.method }}
-            </Badge>
+            </AppBadge>
           </div>
           <span class="col-span-7">{{ selectedData.url }}</span>
 
@@ -135,14 +135,14 @@
           <span class="col-span-7">{{ selectedData.created_at }}</span>
         </div>
 
-        <Button
+        <AppButton
           class="mt-auto"
-          size="xl"
+          size="md"
           variant="red"
           icon="i-fa6-solid-trash"
         >
           Delete
-        </Button>
+        </AppButton>
       </div>
 
       <div
@@ -183,82 +183,55 @@
   </div>
 </template>
 
-<script>
-import { mapState, mapActions } from "vuex";
-import Button from "../components/Button.vue";
-import Badge from "../components/Badge.vue";
-import CardTableCollapse from "../components/CardTableCollapse.vue";
-import CardCollapse from "../components/CardCollapse.vue";
+<script setup>
+import { ref } from "vue";
+import { useRoute } from "vue-router";
+import { storeToRefs } from "pinia";
+import { useRequestsStore } from "@/store/requests";
+import AppButton from "@/components/AppButton.vue";
+import AppBadge from "@/components/AppBadge.vue";
+import CardTableCollapse from "@/components/CardTableCollapse.vue";
+import CardCollapse from "@/components/CardCollapse.vue";
 
-export default {
-  name: "RequestsView",
-  components: {
-    Badge,
-    Button,
-    CardCollapse,
-    CardTableCollapse,
-  },
-  data() {
-    return {
-      selectedData: {},
-    };
-  },
-  computed: {
-    ...mapState(["requests", "loading"]),
-  },
-  beforeCreate() {
-    this.$store.dispatch("setAccountId", this.$route.params.accountId);
-  },
-  mounted() {
-    if (this.requests.length === 0) {
-      this.getAllRequests();
-    }
-  },
-  methods: {
-    ...mapActions({
-      getAllRequests: "getAllRequests", // map `this.getAllRequests()` to `this.$store.dispatch('getAllRequests')`
-      getOlderRequests: "getOlderRequests",
-      getNewerRequests: "getNewerRequests",
-      addNewRequest: "addNewRequest",
-    }),
-    formatDate(dateStr) {
-      const options = {
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit",
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit",
-        hour12: true,
-      };
+const store = useRequestsStore();
+const { getNewerRequests, getOlderRequests } = store;
+const { accountId, requests, loading } = storeToRefs(store);
 
-      const formatted = new Intl.DateTimeFormat("en-US", options).format(
-        new Date(dateStr),
-      );
+const route = useRoute();
+accountId.value = route.params.accountId;
+getOlderRequests();
 
-      return formatted.replace(",", "");
-    },
-    selectData(newVal) {
-      this.selectedData = newVal;
-    },
-    requestDetailTranslator(data) {
-      return {
-        [data.method]: data.hostname,
-        Host: data.ip_address,
-        Date: data.created_at,
-        // TODO: Size: data.size,
-        ID: data.id,
-      };
-    },
-    parseJson(data) {
-      if (!data) return "";
+const selectedData = ref({});
 
-      try {
-        return JSON.parse(data);
-      } catch (e) {
-        return data;
-      }
-    },
-  },
-};
+function formatDate(dateStr) {
+  const options = {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: true,
+  };
+
+  const formatted = new Intl.DateTimeFormat("en-US", options).format(
+    new Date(dateStr),
+  );
+
+  return formatted.replace(",", "");
+}
+
+function selectData(newVal) {
+  selectedData.value = newVal;
+}
+
+function parseJson(data) {
+  if (!data) return "";
+
+  try {
+    return JSON.parse(data);
+  } catch (e) {
+    return data;
+  }
+}
 </script>

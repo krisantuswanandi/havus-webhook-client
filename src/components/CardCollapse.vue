@@ -23,49 +23,36 @@
       </label>
     </div>
 
-    <Collapse :collapsed="collapsed">
+    <AppCollapse :collapsed="collapsed">
       <div id="card-table-collapse-body" class="overflow-hidden px-5 py-1">
         <pre v-if="jsonFormat">{{ data }}</pre>
         <p v-else class="text-slate-600">
           {{ data }}
         </p>
       </div>
-    </Collapse>
+    </AppCollapse>
   </div>
 </template>
 
-<script>
-import Collapse from "./Collapse.vue";
+<script setup>
+import { ref } from "vue";
+import AppCollapse from "./AppCollapse.vue";
 
-export default {
-  name: "CardCollapseComponent",
-  components: { Collapse },
-  props: {
-    title: {
-      type: String,
-      required: true,
-    },
-    data: {
-      type: Object,
-      required: true,
-    },
+defineProps({
+  title: {
+    type: String,
+    required: true,
   },
-  data() {
-    return {
-      jsonFormat: false,
-      collapsed: false,
-    };
+  data: {
+    type: Object,
+    required: true,
   },
-  computed: {},
-  methods: {
-    joinValue(arr) {
-      if (!arr) return false;
+});
 
-      return arr.join(", ");
-    },
-    toggleCollapse() {
-      this.collapsed = !this.collapsed;
-    },
-  },
-};
+const jsonFormat = ref(false);
+const collapsed = ref(false);
+
+function toggleCollapse() {
+  collapsed.value = !collapsed.value;
+}
 </script>

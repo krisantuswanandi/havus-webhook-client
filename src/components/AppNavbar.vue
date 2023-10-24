@@ -12,50 +12,46 @@
       </div>
 
       <!-- TODO: -->
-      <!-- <div class="block md:hidden">
+      <div class="block md:hidden">
         <button
-          class="flex items-center px-3 py-2 border rounded border-gray-400 text-gray-400"
+          class="flex items-center rounded border border-gray-400 px-3 py-2 text-gray-400"
           @click="toggle"
         >
           <FontAwesomeIcon :icon="['fas', 'bars']" />
         </button>
-      </div> -->
-
-      <!-- <div
-        :class="`w-full flex-grow md:flex md:items-center md:w-auto ${open ? 'block': 'hidden'}`"
+      </div>
+      <div
+        :class="`w-full flex-grow md:flex md:w-auto md:items-center ${
+          open ? 'block' : 'hidden'
+        }`"
       >
-        <div class="text-sm items-end md:flex-grow first:mt-3 md:first:mt-0">
+        <div class="items-end text-sm first:mt-3 md:flex-grow md:first:mt-0">
           <router-link
-            v-for="(link, i) in links" :key="i"
-            :class="`text-gray-100 tracking-wider no-underline block pl-0 pb-0 pr-9 md:inline-block
+            v-for="(link, i) in links"
+            :key="i"
+            :class="`block pb-0 pl-0 pr-9 tracking-wider text-gray-100 no-underline md:inline-block
               ${link.path == $route.path ? 'font-bold' : ''}`"
-            @click="toggle"
             :to="link.path"
+            @click="toggle"
           >
             {{ link.text }}
           </router-link>
         </div>
-      </div> -->
+      </div>
     </div>
   </header>
 </template>
 
-<script>
-export default {
-  name: "NavBar",
-  data() {
-    return {
-      open: false,
-      links: [
-        { path: "/", text: "Home" },
-        { path: "/about", text: "About" },
-      ],
-    };
-  },
-  methods: {
-    toggle() {
-      this.open = !this.open;
-    },
-  },
-};
+<script setup>
+import { ref } from "vue";
+
+const links = [
+  { path: "/", text: "Home" },
+  { path: "/about", text: "About" },
+];
+
+const open = ref(false);
+function toggle() {
+  open.value = !open.value;
+}
 </script>
