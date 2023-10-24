@@ -1,6 +1,4 @@
-import axios from 'axios';
-
-import { createStore } from 'vuex';
+import { createStore } from "vuex";
 import {
   REPLACE_ALL_REQUESTS,
   APPEND_REQUESTS,
@@ -8,13 +6,13 @@ import {
   PREPEND_REQUEST,
   LOADING,
   SET_ACCOUNT_ID,
-} from './mutation-types';
+} from "./mutation-types";
 
 export default createStore({
   state: {
     loading: false,
     accountId: null,
-    serverUrl: process.env.VUE_APP_SERVER_URL,
+    serverUrl: import.meta.env.VITE_SERVER_URL,
     requests: [],
   },
   getters: {
@@ -58,27 +56,26 @@ export default createStore({
     setAccountId(context, accountId) {
       context.commit(SET_ACCOUNT_ID, accountId);
     },
-    getAllRequests(context) {
+    async getAllRequests(context) {
       const { accountId } = context.state;
       if (!accountId) return;
 
       context.commit(LOADING, true);
 
-      axios({
-        method: 'GET',
-        url: `${context.state.serverUrl}api/v1/admin/${context.state.accountId}/requests`,
-      })
-        .then(({ data: dataResponse }) => {
-          context.commit(REPLACE_ALL_REQUESTS, dataResponse.data);
-        })
-        .catch(({ response }) => {
-          console.log(response);
-        })
-        .finally(() => {
-          context.commit(LOADING, false);
-        });
+      const response = await fetch(
+        `${context.state.serverUrl}api/v1/admin/${context.state.accountId}/requests`,
+      );
+      const result = await response.json();
+
+      if (response.ok) {
+        context.commit(REPLACE_ALL_REQUESTS, result.data);
+      } else {
+        console.log(result);
+      }
+
+      context.commit(LOADING, false);
     },
-    getOlderRequests(context) {
+    async getOlderRequests(context) {
       const { accountId } = context.state;
       if (!accountId) return;
 
@@ -87,26 +84,23 @@ export default createStore({
       const queryParams = `max_id=${context.getters.oldestId}`;
 
       let url = `${context.state.serverUrl}api/v1/admin`;
-      url    += `/${accountId}/requests?${queryParams}`;
+      url += `/${accountId}/requests?${queryParams}`;
 
-      axios({
-        method: 'GET',
-        url,
-      })
-        .then(({ data: dataResponse }) => {
-          context.commit(APPEND_REQUESTS, dataResponse.data);
-        })
-        .catch((err) => {
-          console.log(err, 'DO SOMETHING HERE LATER!');
-        })
-        .finally(() => {
-          context.commit(LOADING, false);
-        });
+      const response = await fetch(url);
+      const result = await response.json();
+
+      if (response.ok) {
+        context.commit(APPEND_REQUESTS, result.data);
+      } else {
+        console.log("DO SOMETHING HERE LATER!", result);
+      }
+
+      context.commit(LOADING, false);
     },
     addNewRequest(context, newData) {
       context.commit(PREPEND_REQUEST, newData);
     },
-    getNewerRequests(context) {
+    async getNewerRequests(context) {
       const { accountId } = context.state;
       if (!accountId) return;
 
@@ -115,23 +109,19 @@ export default createStore({
       const queryParams = `min_id=${context.getters.newestId}`;
 
       let url = `${context.state.serverUrl}api/v1/admin`;
-      url    += `/${accountId}/requests?${queryParams}`;
+      url += `/${accountId}/requests?${queryParams}`;
 
-      axios({
-        method: 'GET',
-        url,
-      })
-        .then(({ data: dataResponse }) => {
-          context.commit(PREPEND_REQUESTS, dataResponse.data);
-        })
-        .catch(({ response }) => {
-          console.log(response, 'DO SOMETHING HERE LATER!');
-        })
-        .finally(() => {
-          context.commit(LOADING, false);
-        });
+      const response = await fetch(url);
+      const result = await response.json();
+
+      if (response.ok) {
+        context.commit(PREPEND_REQUESTS, result.data);
+      } else {
+        console.log("DO SOMETHING HERE LATER!", result);
+      }
+
+      context.commit(LOADING, false);
     },
   },
-  modules: {
-  },
+  modules: {},
 });

@@ -1,13 +1,13 @@
 <!-- Please remove this file from your project -->
 <template>
-  <header class="bg-gray-900 py-2 fixed z-50 w-full text-white">
-    <div class="mx-5 flex items-center justify-between flex-wrap">
+  <header class="fixed z-50 w-full bg-gray-900 py-2 text-white">
+    <div class="mx-5 flex flex-wrap items-center justify-between">
       <div class="flex items-center justify-between">
-        <img src="@/assets/logo.png" class="h-9" alt="logo"/>
+        <img src="@/assets/logo.png" class="h-9" alt="logo" />
 
         <router-link class="ml-3" to="/">
           <span class="text-xl font-semibold">Webhook</span>
-          <span class="ml-1 font-extralight text-xs">by Wadaw</span>
+          <span class="ml-1 text-xs font-extralight">by Wadaw</span>
         </router-link>
       </div>
 
@@ -42,13 +42,13 @@
 
 <script>
 export default {
-  name: 'NavBar',
+  name: "NavBar",
   data() {
     return {
       open: false,
       links: [
-        { path: '/', text: 'Home' },
-        { path: '/about', text: 'About' },
+        { path: "/", text: "Home" },
+        { path: "/about", text: "About" },
       ],
     };
   },

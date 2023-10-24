@@ -1,8 +1,7 @@
 <template>
   <div
-    :class="`py-[3px] px-1 inline-flex items-center rounded
-      text-[0.65rem] font-bold uppercase leading-3
-    ${currentVariant}`"
+    class="inline-flex items-center rounded px-1 py-[3px] text-[0.65rem] font-bold uppercase leading-3"
+    :class="currentVariant"
   >
     <slot />
   </div>
@@ -10,22 +9,24 @@
 
 <script>
 export default {
-  name: 'BadgeComponent',
+  name: "BadgeComponent",
   props: {
     variant: {
       type: String,
-      required: false,
-      default: 'blue',
+      default: "blue",
     },
-    rounded: Boolean,
+    rounded: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
       variantList: {
-        yellow: 'text-orange-600 bg-amber-100',
-        blue: 'text-white bg-blue-500',
-        gray: 'text-white bg-gray-700',
-        green: 'text-green-50 bg-green-500',
+        yellow: "text-orange-600 bg-amber-100",
+        blue: "text-white bg-blue-500",
+        gray: "text-white bg-gray-700",
+        green: "text-green-50 bg-green-500",
       },
     };
   },
