@@ -7,19 +7,16 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { computed } from "vue";
 
-const props = defineProps({
-  variant: {
-    type: String,
-    default: "blue",
-  },
-  rounded: {
-    type: Boolean,
-    default: false,
-  },
-});
+const props = withDefaults(
+  defineProps<{
+    variant?: "yellow" | "blue" | "gray" | "green";
+    rounded?: boolean;
+  }>(),
+  { variant: "blue" },
+);
 
 const variantList = {
   yellow: "text-orange-600 bg-amber-100",

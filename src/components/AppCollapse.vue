@@ -6,20 +6,18 @@
   </transition>
 </template>
 
-<script setup>
-defineProps({
-  collapsed: {
-    type: Boolean,
-    default: true,
-  },
-});
+<script setup lang="ts">
+defineProps<{
+  collapsed?: boolean;
+}>();
 
-function enter(element) {
+function enter(el: Element) {
+  const element = el as HTMLElement;
   element.style.height = "auto";
 
   const { height } = getComputedStyle(element);
 
-  element.style.height = 0;
+  element.style.height = "0";
 
   // Force repaint to make sure the
   // animation is triggered correctly.
@@ -35,11 +33,13 @@ function enter(element) {
   });
 }
 
-function afterEnter(element) {
+function afterEnter(el: Element) {
+  const element = el as HTMLElement;
   element.style.height = "auto";
 }
 
-function leave(element) {
+function leave(el: Element) {
+  const element = el as HTMLElement;
   const { height } = getComputedStyle(element);
 
   element.style.height = height;
@@ -49,7 +49,7 @@ function leave(element) {
   // getComputedStyle(element).height;
 
   requestAnimationFrame(() => {
-    element.style.height = 0;
+    element.style.height = "0";
   });
 }
 </script>

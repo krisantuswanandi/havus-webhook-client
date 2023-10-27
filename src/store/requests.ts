@@ -2,11 +2,11 @@ import { ref } from "vue";
 import { defineStore } from "pinia";
 
 export const useRequestsStore = defineStore("requests", () => {
-  const accountId = ref(null);
-  const requests = ref([]);
+  const accountId = ref("");
+  const requests = ref<WadawRequest[]>([]);
   const loading = ref(false);
 
-  async function getRequests(params) {
+  async function getRequests(params = {}) {
     if (!accountId.value) return;
 
     loading.value = true;
@@ -54,7 +54,7 @@ export const useRequestsStore = defineStore("requests", () => {
   };
 });
 
-async function fetchRequests(accountId, params = {}) {
+async function fetchRequests(accountId = "bpi", params = {}) {
   const baseUrl = import.meta.env.VITE_SERVER_URL;
   const url = `${baseUrl}api/v1/admin/${accountId}/requests`;
 

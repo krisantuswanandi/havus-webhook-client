@@ -30,7 +30,7 @@
             size="sm"
             variant="gray"
             :disabled="loading"
-            :icon="loading ? 'i-fa6-solid-spinner' : null"
+            :icon="loading ? 'i-fa6-solid-spinner' : ''"
             :icon-spin="true"
             @click="getNewerRequests"
           >
@@ -44,7 +44,7 @@
         :key="i"
         class="px-5 py-3 first:mt-24 hover:cursor-pointer"
         :class="
-          selectedData.id == request.id
+          selectedData?.id == request.id
             ? ' bg-gray-700 text-white'
             : 'text-gray-700 hover:bg-slate-200'
         "
@@ -72,7 +72,7 @@
         size="sm"
         :disabled="loading"
         variant="gray"
-        :icon="loading ? 'i-fa6-solid-spinner' : null"
+        :icon="loading ? 'i-fa6-solid-spinner' : ''"
         :icon-spin="true"
         @click="getOlderRequests"
       >
@@ -87,11 +87,10 @@
         id="content-header"
         class="flex items-center border-b border-b-slate-300 px-5 py-3"
       >
-        <div id="title-content" class="flex items-center">
+        <div v-if="selectedData" id="title-content" class="flex items-center">
           <div
-            v-if="Object.keys(selectedData).length > 0"
             class="i-fa6-solid-angle-left h-7 text-xl hover:cursor-pointer active:text-gray-700"
-            @click="() => (selectedData = {})"
+            @click="selectedData = null"
           />
           <span class="ml-3 text-lg">{{ selectedData.id }}</span>
         </div>
@@ -115,57 +114,51 @@
         </div>
       </div>
 
-      <div
-        v-if="Object.keys(selectedData).length > 0"
-        id="content-body-overview"
-        class="flex px-5 py-3"
-      >
-        <div class="grid grow grid-cols-8">
-          <div class="mb-3">
-            <AppBadge variant="yellow">
-              {{ selectedData.method }}
-            </AppBadge>
+      <template v-if="selectedData">
+        <div id="content-body-overview" class="flex px-5 py-3">
+          <div class="grid grow grid-cols-8">
+            <div class="mb-3">
+              <AppBadge variant="yellow">
+                {{ selectedData.method }}
+              </AppBadge>
+            </div>
+            <span class="col-span-7">{{ selectedData.url }}</span>
+
+            <span class="text-slate-400">Host</span>
+            <span class="col-span-7">{{ selectedData.ip_address }}</span>
+
+            <span class="text-slate-400">Date</span>
+            <span class="col-span-7">{{ selectedData.created_at }}</span>
           </div>
-          <span class="col-span-7">{{ selectedData.url }}</span>
 
-          <span class="text-slate-400">Host</span>
-          <span class="col-span-7">{{ selectedData.ip_address }}</span>
-
-          <span class="text-slate-400">Date</span>
-          <span class="col-span-7">{{ selectedData.created_at }}</span>
+          <AppButton
+            class="mt-auto"
+            size="md"
+            variant="red"
+            icon="i-fa6-solid-trash"
+          >
+            Delete
+          </AppButton>
         </div>
 
-        <AppButton
-          class="mt-auto"
-          size="md"
-          variant="red"
-          icon="i-fa6-solid-trash"
-        >
-          Delete
-        </AppButton>
-      </div>
-
-      <div
-        v-if="Object.keys(selectedData).length > 0"
-        id="content-body"
-        class="grid grid-cols-2"
-      >
-        <CardTableCollapse
-          title="Headers"
-          :data="parseJson(selectedData.raw_headers)"
-          class="border-y border-y-slate-300"
-        />
-        <CardTableCollapse
-          title="Query Strings"
-          :data="parseJson(selectedData.raw_query_strings)"
-          class="border-y border-l border-y-slate-300 border-l-slate-300"
-        />
-        <CardCollapse
-          title="Raw Body"
-          class="col-span-2 border-b border-b-slate-300"
-          :data="parseJson(selectedData.raw_body)"
-        />
-      </div>
+        <div id="content-body" class="grid grid-cols-2">
+          <CardTableCollapse
+            title="Headers"
+            :data="parseJson(selectedData.raw_headers)"
+            class="border-y border-y-slate-300"
+          />
+          <CardTableCollapse
+            title="Query Strings"
+            :data="parseJson(selectedData.raw_query_strings)"
+            class="border-y border-l border-y-slate-300 border-l-slate-300"
+          />
+          <CardCollapse
+            title="Raw Body"
+            class="col-span-2 border-b border-b-slate-300"
+            :data="parseJson(selectedData.raw_body)"
+          />
+        </div>
+      </template>
 
       <div
         id="advertisment"
@@ -183,7 +176,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref } from "vue";
 import { useRoute } from "vue-router";
 import { storeToRefs } from "pinia";
@@ -198,13 +191,13 @@ const { getNewerRequests, getOlderRequests } = store;
 const { accountId, requests, loading } = storeToRefs(store);
 
 const route = useRoute();
-accountId.value = route.params.accountId;
+accountId.value = route.params.accountId as string;
 getOlderRequests();
 
-const selectedData = ref({});
+const selectedData = ref<WadawRequest | null>(null);
 
-function formatDate(dateStr) {
-  const options = {
+function formatDate(dateStr: string) {
+  const options: Intl.DateTimeFormatOptions = {
     year: "numeric",
     month: "2-digit",
     day: "2-digit",
@@ -221,17 +214,15 @@ function formatDate(dateStr) {
   return formatted.replace(",", "");
 }
 
-function selectData(newVal) {
+function selectData(newVal: WadawRequest) {
   selectedData.value = newVal;
 }
 
-function parseJson(data) {
-  if (!data) return "";
-
+function parseJson(data: string) {
   try {
     return JSON.parse(data);
   } catch (e) {
-    return data;
+    return data || "";
   }
 }
 </script>

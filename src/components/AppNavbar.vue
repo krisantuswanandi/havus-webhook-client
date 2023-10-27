@@ -30,7 +30,7 @@
             v-for="(link, i) in links"
             :key="i"
             :class="`block pb-0 pl-0 pr-9 tracking-wider text-gray-100 no-underline md:inline-block
-              ${link.path == $route.path ? 'font-bold' : ''}`"
+              ${link.path == route.path ? 'font-bold' : ''}`"
             :to="link.path"
             @click="toggle"
           >
@@ -42,8 +42,11 @@
   </header>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref } from "vue";
+import { useRoute } from "vue-router";
+
+const route = useRoute();
 
 const links = [
   { path: "/", text: "Home" },

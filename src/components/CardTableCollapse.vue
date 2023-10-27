@@ -27,7 +27,7 @@
 
           <div class="col-span-3">
             <p class="break-words text-slate-600">
-              {{ joinValue(data[key]) }}
+              {{ getValue(data[key]) }}
             </p>
           </div>
         </div>
@@ -36,30 +36,29 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref } from "vue";
 import AppCollapse from "./AppCollapse.vue";
 
-defineProps({
-  title: {
-    type: String,
-    required: true,
-  },
-  data: {
-    type: Object,
-    required: true,
-  },
-});
+type DataValue = string[] | string;
+
+defineProps<{
+  title: string;
+  data: Record<string, DataValue>;
+}>();
 
 const collapsed = ref(false);
 
-function joinValue(arr) {
-  if (!arr) return false;
+function getValue(value: DataValue) {
+  if (Array.isArray(value)) {
+    return value.join(", ") || "-";
+  }
 
-  return arr.join(", ");
+  // in case there's a non-string value
+  return value.toString();
 }
 
 function toggleCollapse() {
-  this.collapsed = !this.collapsed;
+  collapsed.value = !collapsed.value;
 }
 </script>

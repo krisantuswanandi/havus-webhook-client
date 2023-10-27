@@ -18,39 +18,26 @@
   </button>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { computed } from "vue";
 
-const props = defineProps({
-  disabled: {
-    type: Boolean,
-    default: false,
+const props = withDefaults(
+  defineProps<{
+    disabled?: boolean;
+    icon?: string;
+    to?: string;
+    variant?: "blue" | "gray" | "red";
+    size?: "sm" | "md";
+    rounded?: boolean;
+    iconSpin?: boolean;
+  }>(),
+  {
+    variant: "blue",
+    size: "md",
+    to: "#",
+    icon: "",
   },
-  icon: {
-    type: String,
-    default: null,
-  },
-  to: {
-    type: String,
-    default: "#",
-  },
-  variant: {
-    type: String,
-    default: "blue",
-  },
-  size: {
-    type: String,
-    default: "md",
-  },
-  rounded: {
-    type: Boolean,
-    default: false,
-  },
-  iconSpin: {
-    type: Boolean,
-    default: false,
-  },
-});
+);
 
 const colorList = {
   blue: {

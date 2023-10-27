@@ -34,20 +34,14 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref } from "vue";
 import AppCollapse from "./AppCollapse.vue";
 
-defineProps({
-  title: {
-    type: String,
-    required: true,
-  },
-  data: {
-    type: Object,
-    required: true,
-  },
-});
+defineProps<{
+  title: string;
+  data: Record<string, string>;
+}>();
 
 const jsonFormat = ref(false);
 const collapsed = ref(false);
