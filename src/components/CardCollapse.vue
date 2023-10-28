@@ -3,7 +3,7 @@
     <div
       id="card-table-collapse-header"
       class="flex items-center bg-gray-700 px-5 py-1 text-gray-50 hover:cursor-pointer hover:bg-gray-800 focus:bg-gray-900"
-      @click="toggleCollapse"
+      @click.self="toggleCollapse"
     >
       <div
         class="i-fa6-solid-angle-up transition duration-200 ease-in-out"
