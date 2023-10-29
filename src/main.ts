@@ -1,5 +1,5 @@
 import { createApp } from "vue";
-import { createPinia } from "pinia";
+import { VueQueryPlugin } from "@tanstack/vue-query";
 import "@unocss/reset/tailwind.css";
 import "virtual:uno.css";
 
@@ -16,11 +16,10 @@ async function main() {
     worker.start();
   }
 
-  const pinia = createPinia();
   const app = createApp(App);
 
-  app.use(pinia);
   app.use(router);
+  app.use(VueQueryPlugin);
   app.mount("#app");
 }
 

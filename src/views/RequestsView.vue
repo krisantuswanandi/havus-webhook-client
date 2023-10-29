@@ -22,59 +22,61 @@
           class="flex items-center justify-between border-y border-y-slate-300 bg-slate-200 px-5 py-1"
         >
           <div class="flex items-center">
-            <p class="font-semibold">REQUEST ({{ requests?.length || 0 }})</p>
+            <p class="font-semibold">REQUEST ({{ count }})</p>
             <div class="i-fa6-solid-rotate ml-1 h-3 w-3 animate-spin" />
           </div>
 
           <AppButton
             size="sm"
             variant="gray"
-            :disabled="loading"
-            :icon="loading ? 'i-fa6-solid-spinner' : ''"
+            :disabled="isFetching"
+            :icon="isFetching ? 'i-fa6-solid-spinner' : ''"
             :icon-spin="true"
-            @click="getNewerRequests"
+            @click="fetchPreviousPage"
           >
             Load
           </AppButton>
         </div>
       </div>
 
-      <div
-        v-for="(request, i) in requests"
-        :key="i"
-        class="px-5 py-3 first:mt-24 hover:cursor-pointer"
-        :class="
-          selectedData?.id == request.id
-            ? ' bg-gray-700 text-white'
-            : 'text-gray-700 hover:bg-slate-200'
-        "
-        @click="selectData(request)"
-      >
-        <div class="flex flex-nowrap items-center">
-          <AppBadge variant="yellow" class="font-bold">
-            {{ request.method }}
-          </AppBadge>
-          <span class="ml-1 text-sm leading-3">
-            #{{ request.id.slice(0, 6) }}
-          </span>
-          <span class="ml-1 overflow-hidden text-ellipsis text-sm leading-3">
-            {{ request.ip_address }}
-          </span>
-        </div>
+      <template v-for="page in data?.pages">
+        <div
+          v-for="request in page.data"
+          :key="request.id"
+          class="px-5 py-3 first:mt-24 hover:cursor-pointer"
+          :class="
+            selectedData?.id == request.id
+              ? ' bg-gray-700 text-white'
+              : 'text-gray-700 hover:bg-slate-200'
+          "
+          @click="selectData(request)"
+        >
+          <div class="flex flex-nowrap items-center">
+            <AppBadge variant="yellow" class="font-bold">
+              {{ request.method }}
+            </AppBadge>
+            <span class="ml-1 text-sm leading-3">
+              #{{ request.id.slice(0, 6) }}
+            </span>
+            <span class="ml-1 overflow-hidden text-ellipsis text-sm leading-3">
+              {{ request.ip_address }}
+            </span>
+          </div>
 
-        <div class="mt-2">
-          {{ formatDate(request.created_at) }}
+          <div class="mt-2">
+            {{ formatDate(request.created_at) }}
+          </div>
         </div>
-      </div>
+      </template>
 
       <AppButton
         class="mx-auto my-2"
         size="sm"
-        :disabled="loading"
+        :disabled="isFetching"
         variant="gray"
-        :icon="loading ? 'i-fa6-solid-spinner' : ''"
+        :icon="isFetching ? 'i-fa6-solid-spinner' : ''"
         :icon-spin="true"
-        @click="getOlderRequests"
+        @click="fetchNextPage"
       >
         Load Older
       </AppButton>
@@ -179,20 +181,17 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useRoute } from "vue-router";
-import { storeToRefs } from "pinia";
-import { useRequestsStore } from "@/store/requests";
 import AppButton from "@/components/AppButton.vue";
 import AppBadge from "@/components/AppBadge.vue";
 import CardTableCollapse from "@/components/CardTableCollapse.vue";
 import CardCollapse from "@/components/CardCollapse.vue";
-
-const store = useRequestsStore();
-const { getNewerRequests, getOlderRequests } = store;
-const { accountId, requests, loading } = storeToRefs(store);
+import { useWadawRequests } from "@/composables/request";
 
 const route = useRoute();
-accountId.value = route.params.accountId as string;
-getOlderRequests();
+const accountId = route.params.accountId as string;
+
+const { data, count, isFetching, fetchNextPage, fetchPreviousPage } =
+  useWadawRequests(accountId);
 
 const selectedData = ref<WadawRequest | null>(null);
 
