@@ -1,13 +1,7 @@
 <template>
-  <div class="p-12 w-full flex flex-col justify-center items-center">
-    <div class="text-center text-gray-700 mt-80">
-      <h1 class="font-semibold text-5xl">WELCOME HOME</h1>
+  <div class="flex w-full flex-col items-center justify-center p-12">
+    <div class="mt-80 text-center text-gray-700">
+      <h1 class="text-5xl font-semibold">WELCOME HOME</h1>
     </div>
   </div>
 </template>
-
-<script>
-export default {
-  name: 'HomeView',
-};
-</script>

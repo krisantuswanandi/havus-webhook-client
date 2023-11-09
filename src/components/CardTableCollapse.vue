@@ -2,70 +2,63 @@
   <div class="bg-gray-400">
     <div
       id="card-table-collapse-header"
-      class="px-5 py-1 bg-gray-700 hover:bg-gray-800 text-gray-50 hover:cursor-pointer
-        focus:bg-gray-900"
+      class="flex items-center bg-gray-700 px-5 py-1 text-gray-50 hover:cursor-pointer hover:bg-gray-800 focus:bg-gray-900"
       @click="toggleCollapse"
     >
-      <FontAwesomeIcon
-        icon="angle-up"
-        :class="`transition ease-in-out duration-200 ${!collapsed ? 'rotate-180' : ''}`"
+      <div
+        class="i-fa6-solid-angle-up transition duration-200 ease-in-out"
+        :class="!collapsed ? 'rotate-180' : ''"
       />
       <span class="ml-2 font-semibold">{{ title }}</span>
     </div>
 
-    <Collapse :collapsed="collapsed">
+    <AppCollapse :collapsed="collapsed">
       <div id="card-table-collapse-body" :class="`overflow-hidden`">
         <div
           v-for="(key, i) in Object.keys(data)"
           :key="i"
-          class="group grid grid-cols-4 px-5 py-1 bg-white hover:bg-slate-200 hover:cursor-pointer"
+          class="group grid grid-cols-4 bg-white px-5 py-1 hover:cursor-pointer hover:bg-slate-200"
         >
           <div class="flex">
-            <span class="text-slate-400 group-hover:text-slate-600">{{ key }}</span>
+            <span class="text-slate-400 group-hover:text-slate-600">
+              {{ key }}
+            </span>
           </div>
 
           <div class="col-span-3">
-            <p class="break-words text-slate-600">{{ joinValue(data[key]) }}</p>
+            <p class="break-words text-slate-600">
+              {{ getValue(data[key]) }}
+            </p>
           </div>
         </div>
       </div>
-    </Collapse>
+    </AppCollapse>
   </div>
 </template>
 
-<script>
-import Collapse from './Collapse.vue';
+<script setup lang="ts">
+import { ref } from "vue";
+import AppCollapse from "./AppCollapse.vue";
 
-export default {
-  name: 'CardTableCollapseComponent',
-  components: { Collapse },
-  props: {
-    title: {
-      type: String,
-      required: true,
-    },
-    data: {
-      type: Object,
-      required: true,
-    },
-  },
-  data() {
-    return {
-      jsonFormat: false,
-      collapsed: false,
-    };
-  },
-  computed: {
-  },
-  methods: {
-    joinValue(arr) {
-      if (!arr) return false;
+type DataValue = string[] | string;
 
-      return arr.join(', ');
-    },
-    toggleCollapse() {
-      this.collapsed = !this.collapsed;
-    },
-  },
-};
+defineProps<{
+  title: string;
+  data: Record<string, DataValue>;
+}>();
+
+const collapsed = ref(false);
+
+function getValue(value: DataValue) {
+  if (Array.isArray(value)) {
+    return value.join(", ") || "-";
+  }
+
+  // in case there's a non-string value
+  return value.toString();
+}
+
+function toggleCollapse() {
+  collapsed.value = !collapsed.value;
+}
 </script>

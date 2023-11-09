@@ -2,11 +2,14 @@ FROM node:lts-alpine3.16 as build-stage
 
 WORKDIR /app
 
-COPY package*.json ./
+COPY package.json ./
+COPY yarn.lock ./
+
+RUN yarn install
+
 COPY . .
 
-RUN npm install
-RUN npm run build
+RUN yarn build
 
 # FROM --platform=linux/amd64 node:lts-alpine as production-stage
 # COPY --from=build-stage /app/dist /app
